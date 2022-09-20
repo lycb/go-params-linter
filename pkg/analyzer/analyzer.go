@@ -8,7 +8,6 @@ import (
 	"go/token"
 	"strings"
 
-	"github.com/andreyvit/diff"
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/passes/inspect"
 	"golang.org/x/tools/go/ast/inspector"
@@ -56,9 +55,7 @@ func run(pass *analysis.Pass) (any, error) {
 					oldParam = strings.Trim(oldParam, "func")
 					oldParam = strings.TrimSuffix(oldParam, " "+firstParamType.Name)
 					oldExpr := render(pass.Fset, node)
-
 					newParam := strings.Replace(oldParam, " "+firstParamType.Name, "", 1)
-
 					newExpr := strings.Replace(oldExpr, oldParam, newParam, 1)
 
 					fix(pass, node, funcDecl.Name.Name, previousParamName, previousParamType.Name, firstParamName, firstParamType.Name, oldExpr, newExpr)
@@ -81,11 +78,12 @@ func run(pass *analysis.Pass) (any, error) {
 
 				// fail if type already exist in map with count 1
 				if tmpmap[secondParamType.Name] > 0 {
-					oldParamExpr := render(pass.Fset, funcDecl.Type)
+					oldParam := render(pass.Fset, funcDecl.Type)
+					oldParam = strings.Trim(oldParam, "func")
+					oldParam = strings.TrimSuffix(oldParam, " "+firstParamType.Name)
 					oldExpr := render(pass.Fset, node)
-					diffStr := diff.LineDiff(oldParamExpr, oldExpr)
-					fmt.Printf("diff: " + diffStr)
-					newExpr := strings.Replace(oldParamExpr, " "+firstParamType.Name, "", 1)
+					newParam := strings.Replace(oldParam, " "+firstParamType.Name, "", 1)
+					newExpr := strings.Replace(oldExpr, oldParam, newParam, 1)
 
 					fix(pass, node, funcDecl.Name.Name, firstParamName, firstParamType.Name, secondParamName, secondParamType.Name, oldExpr, newExpr)
 					return
