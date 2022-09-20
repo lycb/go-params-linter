@@ -1,4 +1,4 @@
-module go-params-linter
+module github.com/lycb/go-params-linter
 
 go 1.19
 
