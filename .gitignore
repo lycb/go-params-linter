@@ -16,3 +16,6 @@
 
 # Local testing file
 example.go
+
+# Misc
+.DS_Store
