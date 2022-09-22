@@ -8,8 +8,10 @@ cd <your-go-project>
 go-params-linter ./...
 ```
 
--- do not run with `-fix` flag, doesn't work 😆
+run with the `-fix` flag to automatically merge params with the same type
+
+## Known Limitations with `-fix`
+`-fix` flag current remove free-floating comments inside of a method, use with caution 😅
 
 ## Demo
 https://user-images.githubusercontent.com/32417800/191370161-a73eccc7-ad42-4743-999f-172d95e2c448.mov
-
